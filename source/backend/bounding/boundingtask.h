@@ -37,7 +37,7 @@
 #define POVRAY_BACKEND_BOUNDINGTASK_H
 
 // Module config header file must be the first file included within POV-Ray unit header files
-#include "backend/configbackend.h"
+//#include "backend/configbackend.h"
 
 // C++ variants of C standard header files
 //  (none at the moment)
@@ -62,11 +62,11 @@ class BoundingTask final : public SceneTask
 {
     public:
         BoundingTask(std::shared_ptr<BackendSceneData> sd, unsigned int bt, size_t seed);
-        virtual ~BoundingTask() override;
+        ~BoundingTask() override = default;
 
-        virtual void Run() override;
-        virtual void Stopped() override;
-        virtual void Finish() override;
+        void Run() override;
+        void Stopped() override;
+        void Finish() override;
 
         void AppendObject(ObjectPtr p);
 

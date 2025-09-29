@@ -120,7 +120,7 @@ class ViewData final
         class BlockInfo
         {
             public:
-                virtual ~BlockInfo() {}
+            virtual ~BlockInfo() =default;
         };
 
         /**
@@ -253,7 +253,7 @@ class ViewData final
          *  Get the highest trace level found when last rendering this view.
          *  @return                 Highest trace level found so far.
          */
-        unsigned int GetHighestTraceLevel();
+        //unsigned int GetHighestTraceLevel();
 
         /**
          *  Set the highest trace level found while rendering this view.

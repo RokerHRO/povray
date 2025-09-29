@@ -41,6 +41,7 @@
 #include "base/configbase.h"
 
 // C++ variants of C standard header files
+#include <array>
 #include <cmath>
 
 // C++ standard header files
@@ -133,45 +134,27 @@ class GenericRGBColour final
 
         friend GenericRGBColour ToRGBColour(const GenericColour<T>& col);
 
-        /// Default constructor.
-        inline GenericRGBColour()
-        {
-            mColour[RED]   = 0.0;
-            mColour[GREEN] = 0.0;
-            mColour[BLUE]  = 0.0;
-        }
+        GenericRGBColour()
+        : mColour{ T(), T(), T() }
+        {}
 
         /// Copy constructor.
-        inline GenericRGBColour(const GenericRGBColour& col)
-        {
-            mColour[RED]   = col.mColour[RED];
-            mColour[GREEN] = col.mColour[GREEN];
-            mColour[BLUE]  = col.mColour[BLUE];
-        }
+        GenericRGBColour(const GenericRGBColour& col) = default;
 
         template<typename T2>
         inline explicit GenericRGBColour(const GenericRGBColour<T2>& col)
-        {
-            mColour[RED]   = col.mColour[RED];
-            mColour[GREEN] = col.mColour[GREEN];
-            mColour[BLUE]  = col.mColour[BLUE];
-        }
+        : mColour{ T(col.mColour[RED]), T(col.mColour[GREEN]), T(col.mColour[BLUE])}
+        {}
 
-        inline explicit GenericRGBColour(T grey)
-        {
-            mColour[RED]   = grey;
-            mColour[GREEN] = grey;
-            mColour[BLUE]  = grey;
-        }
+        explicit GenericRGBColour(T grey)
+        : mColour{grey, grey, grey}
+        {}
 
-        inline explicit GenericRGBColour(T red, T green, T blue)
-        {
-            mColour[RED]   = red;
-            mColour[GREEN] = green;
-            mColour[BLUE]  = blue;
-        }
+        explicit GenericRGBColour(T red, T green, T blue)
+        : mColour{ red, green, blue }
+        {}
 
-        inline explicit GenericRGBColour(const GenericRGBFTColour<T>& col)
+        explicit GenericRGBColour(const GenericRGBFTColour<T>& col)
         {
             mColour[RED]   = col.red();
             mColour[GREEN] = col.green();
@@ -179,11 +162,11 @@ class GenericRGBColour final
         }
 
         template<int BIAS, bool QUANTIZE_TO_NEAREST, typename T2>
-        inline explicit GenericRGBColour(const GenericRGBEColour<BIAS,QUANTIZE_TO_NEAREST,T2>& col)
+        explicit GenericRGBColour(const GenericRGBEColour<BIAS,QUANTIZE_TO_NEAREST,T2>& col)
         {
             if (col.mData[GenericRGBEColour<BIAS,QUANTIZE_TO_NEAREST,T2>::EXP] > std::numeric_limits<T2>::min())
             {
-                double expFactor = ldexp(1.0,(int)col.mData[GenericRGBEColour<BIAS,QUANTIZE_TO_NEAREST,T2>::EXP]-(int)(BIAS+8));
+                double expFactor = ldexp(1.0,(int)col.mData[GenericRGBEColour<BIAS,QUANTIZE_TO_NEAREST,T2>::EXP]-(BIAS+8));
                 double quantizationFix = (QUANTIZE_TO_NEAREST? 0.0 : 0.5);
                 mColour[RED]   = (col.mData[GenericRGBEColour<BIAS,QUANTIZE_TO_NEAREST,T2>::RED]   + quantizationFix) * expFactor;
                 mColour[GREEN] = (col.mData[GenericRGBEColour<BIAS,QUANTIZE_TO_NEAREST,T2>::GREEN] + quantizationFix) * expFactor;
@@ -204,13 +187,7 @@ class GenericRGBColour final
             mColour[BLUE]  = col.Blue();
         }
 */
-        inline GenericRGBColour& operator=(const GenericRGBColour& col)
-        {
-            mColour[RED]   = col.mColour[RED];
-            mColour[GREEN] = col.mColour[GREEN];
-            mColour[BLUE]  = col.mColour[BLUE];
-            return *this;
-        }
+        GenericRGBColour& operator=(const GenericRGBColour& col) = default;
 
         inline T  operator[](int idx) const { return mColour[idx]; }
         inline T& operator[](int idx)       { return mColour[idx]; }
@@ -576,15 +553,12 @@ class GenericRGBColour final
             BLUE   = 2
         };
 
-        T mColour[3];
+        std::array<T,3> mColour;
 
 #if (NUM_COLOUR_CHANNELS == 3)
         inline explicit GenericRGBColour(const GenericColour<T>& col)
-        {
-            mColour[RED]   = col.mColour[0];
-            mColour[GREEN] = col.mColour[1];
-            mColour[BLUE]  = col.mColour[2];
-        }
+        : mColour(col.mColour)
+        {}
 #else
         #error "TODO!"
 #endif
@@ -690,11 +664,7 @@ class GenericRGBFTColour final
         {}
 
         /// Copy constructor.
-        inline GenericRGBFTColour(const GenericRGBFTColour& col) :
-            mColour(col.mColour),
-            mFilter(col.mFilter),
-            mTransm(col.mTransm)
-        {}
+        inline GenericRGBFTColour(const GenericRGBFTColour& col) = default;
 
         template<typename T2>
         inline explicit GenericRGBFTColour(const GenericRGBFTColour<T2>& col) :
@@ -733,13 +703,7 @@ class GenericRGBFTColour final
             mTransm(expr[4])
         {}
 
-        inline GenericRGBFTColour& operator=(const GenericRGBFTColour& col)
-        {
-            mColour = col.mColour;
-            mFilter = col.mFilter;
-            mTransm = col.mTransm;
-            return *this;
-        }
+        inline GenericRGBFTColour& operator=(const GenericRGBFTColour& col) = default;
 
         inline GenericRGBColour<T>  rgb() const { return mColour; }
         inline GenericRGBColour<T>& rgb()       { return mColour; }
@@ -1008,10 +972,7 @@ class GenericRGBTColour final
         {}
 
         /// Copy constructor.
-        inline GenericRGBTColour(const GenericRGBTColour& col) :
-            mColour(col.mColour),
-            mTransm(col.mTransm)
-        {}
+        inline GenericRGBTColour(const GenericRGBTColour& col) = default;
 
         template<typename T2>
         inline explicit GenericRGBTColour(const GenericRGBTColour<T2>& col) :
@@ -1035,13 +996,7 @@ class GenericRGBTColour final
             mTransm(col.transm())
         {}
 */
-
-        inline GenericRGBTColour& operator=(const GenericRGBTColour& col)
-        {
-            mColour = col.mColour;
-            mTransm = col.mTransm;
-            return *this;
-        }
+        inline GenericRGBTColour& operator=(const GenericRGBTColour& col) = default;
 
         inline GenericRGBColour<T>  rgb() const { return mColour; }
         inline GenericRGBColour<T>& rgb()       { return mColour; }
@@ -1261,18 +1216,16 @@ class GenericColour final
 
         /// Default constructor.
         inline GenericColour()
-        {
-            for (int i = 0; i < channels; i ++)
-                mColour[i] = 0.0;
-        }
+        : mColour{}
+        {}
 
         /// Copy constructor.
-        inline GenericColour(const GenericColour& col)
-        {
+        inline GenericColour(const GenericColour& col) = default;
+/*        {
             for (int i = 0; i < channels; i ++)
                 mColour[i] = col.mColour[i];
         }
-
+*/
         template<typename T2>
         inline explicit GenericColour(const GenericColour<T2>& col)
         {
@@ -1301,13 +1254,13 @@ class GenericColour final
                 mColour[i] = (col.mData[i] + 0.5) * exponent;
         }
 */
-        inline GenericColour& operator=(const GenericColour& col)
-        {
+        inline GenericColour& operator=(const GenericColour& col) = default;
+/*        {
             for (int i = 0; i < channels; i ++)
                 mColour[i] = col.mColour[i];
             return *this;
         }
-
+*/
         inline T  operator[](int idx) const { return mColour[idx]; }
         inline T& operator[](int idx)       { return mColour[idx]; }
 
@@ -1740,7 +1693,7 @@ class GenericColour final
 
 #endif
 
-        T mColour[channels];
+        std::array<T,channels> mColour;
 
 #if (NUM_COLOUR_CHANNELS == 3)
         inline explicit GenericColour(const GenericRGBColour<T>& col)

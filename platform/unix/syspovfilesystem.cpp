@@ -121,7 +121,7 @@ std::size_t LargeFile::Read(void* data, std::size_t maxSize)
 {
     if (mpData->handle == -1)
         return false;
-    return read(mpData->handle, data, int(maxSize));
+    return read(mpData->handle, data, maxSize);
 }
 
 bool LargeFile::Write(const void* data, std::size_t size)

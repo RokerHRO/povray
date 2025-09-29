@@ -70,22 +70,20 @@ namespace vfe
   {
     public:
       vfeException() : std::runtime_error("") {}
-      vfeException(const std::string str) : std::runtime_error(str) {}
-      virtual ~vfeException() throw() override {}
+      explicit vfeException(const std::string& str) : std::runtime_error(str) {}
   } ;
 
   class vfeCriticalError : public vfeException
   {
     public:
       vfeCriticalError() : m_Line(0), vfeException() {}
-      vfeCriticalError(const std::string str) : m_Line(0), vfeException(str) {}
-      vfeCriticalError(const std::string str, const std::string filename, int line) :
+      explicit vfeCriticalError(const std::string& str) : m_Line(0), vfeException(str) {}
+      vfeCriticalError(const std::string& str, const std::string& filename, int line) :
         vfeException(str), m_Filename(filename), m_Line(line) {}
-      virtual ~vfeCriticalError() throw() override {}
 
-      const std::string Filename() { return m_Filename; }
-      int Line() { return m_Line; }
-
+      const std::string Filename() const { return m_Filename; }
+      int Line() const { return m_Line; }
+    private:
       const std::string m_Filename;
       const int m_Line;
   };
@@ -93,15 +91,13 @@ namespace vfe
   class vfeInvalidDataError : public vfeCriticalError
   {
     public:
-      vfeInvalidDataError(const std::string str) : vfeCriticalError(str) {}
-      virtual ~vfeInvalidDataError() throw() override {}
+      explicit vfeInvalidDataError(const std::string& str) : vfeCriticalError(str) {}
   };
 
   class vfeConsole : public Console
   {
     public:
-      vfeConsole(vfeSession *session, int width = -1);
-      virtual ~vfeConsole() override;
+      explicit vfeConsole(vfeSession *session, int width = -1);
 
       virtual void Initialise() override;
       virtual void Output(const std::string&) override;
@@ -120,8 +116,7 @@ namespace vfe
   {
     public:
       vfePlatformBase();
-      vfePlatformBase(vfeSession& session);
-      virtual ~vfePlatformBase() override;
+      explicit vfePlatformBase(vfeSession& session);
 
       virtual UCS2String GetTemporaryPath() override;
       virtual UCS2String CreateTemporaryFile() override;
@@ -138,7 +133,6 @@ namespace vfe
   {
     public:
       vfeParserMessageHandler();
-      virtual ~vfeParserMessageHandler() override;
 
     protected:
       virtual void Options(Console *, POVMS_Object&, bool) override;
@@ -156,7 +150,6 @@ namespace vfe
   {
     public:
       vfeRenderMessageHandler();
-      virtual ~vfeRenderMessageHandler() override;
 
     protected:
       virtual void Options(Console *, POVMS_Object&, bool) override;
@@ -172,8 +165,7 @@ namespace vfe
   class vfeProcessRenderOptions : public ProcessRenderOptions
   {
     public:
-      vfeProcessRenderOptions(vfeSession *);
-      virtual ~vfeProcessRenderOptions() override;
+      explicit vfeProcessRenderOptions(vfeSession *);
 
     protected:
       virtual int ReadSpecialOptionHandler(INI_Parser_Table *, char *, POVMSObjectPtr) override;
@@ -194,7 +186,6 @@ namespace vfe
   {
     public:
       vfeDisplay(unsigned int width, unsigned int height, vfeSession *session, bool visible = false);
-      virtual ~vfeDisplay() override;
 
       virtual void Initialise() override;
       virtual void Close();

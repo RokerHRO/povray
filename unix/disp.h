@@ -54,11 +54,11 @@ namespace pov_frontend
         public:
             UnixDisplay(unsigned int w, unsigned int h, vfeSession *session, bool visible) :
                 vfeDisplay(w, h, session, visible) {};
-            virtual ~UnixDisplay() override {} ;
-            virtual void Initialise() override = 0;
-            virtual void Close() override = 0;
-            virtual void Show() override = 0;
-            virtual void Hide() override = 0;
+            ~UnixDisplay() override =default ;
+            void Initialise() override = 0;
+            void Close() override = 0;
+            void Show() override = 0;
+            void Hide() override = 0;
 
             virtual bool TakeOver(UnixDisplay *display) = 0;
 

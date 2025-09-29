@@ -93,10 +93,7 @@ class SceneObjects final : public BSPTree::Objects
             }
         }
 
-        virtual ~SceneObjects() override
-        {
-            // nothing to do
-        }
+        ~SceneObjects() override = default;
 
         virtual unsigned int size() const override
         {
@@ -153,10 +150,6 @@ BoundingTask::BoundingTask(std::shared_ptr<BackendSceneData> sd, unsigned int bt
     SceneTask(new TraceThreadData(std::dynamic_pointer_cast<SceneData>(sd), seed), boost::bind(&BoundingTask::SendFatalError, this, _1), "Bounding", sd),
     sceneData(sd),
     boundingThreshold(bt)
-{
-}
-
-BoundingTask::~BoundingTask()
 {
 }
 

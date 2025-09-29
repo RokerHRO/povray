@@ -56,10 +56,6 @@ vfeDisplay::vfeDisplay(unsigned int w, unsigned int h, vfeSession* session, bool
 {
 }
 
-vfeDisplay::~vfeDisplay()
-{
-}
-
 void vfeDisplay::Initialise()
 {
   m_Pixels.clear();

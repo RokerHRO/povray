@@ -178,10 +178,6 @@ vfeConsole::vfeConsole(vfeSession *session, int width) : Console(width == -1 ? s
   Initialise();
 }
 
-vfeConsole::~vfeConsole()
-{
-}
-
 void vfeConsole::Initialise()
 {
   rawBuffer [0] = '\0' ;
@@ -243,10 +239,6 @@ vfePlatformBase::vfePlatformBase(vfeSession& session) : m_Session(&session), Pla
 {
 }
 
-vfePlatformBase::~vfePlatformBase()
-{
-}
-
 UCS2String vfePlatformBase::GetTemporaryPath(void)
 {
   return m_Session->GetTemporaryPath();
@@ -291,9 +283,6 @@ vfeParserMessageHandler::vfeParserMessageHandler() : ParserMessageHandler()
   m_Session = vfeSession::GetSessionFromThreadID();
 }
 
-vfeParserMessageHandler::~vfeParserMessageHandler()
-{
-}
 
 void vfeParserMessageHandler::Options(Console *Con, POVMS_Object& Obj, bool conout)
 {
@@ -426,11 +415,7 @@ void vfeParserMessageHandler::DebugInfo(Console *Con, POVMS_Object& Obj, bool co
 ////////////////////////////////////////////////////////////////////////////////////////
 
 vfeRenderMessageHandler::vfeRenderMessageHandler() : RenderMessageHandler()
-{
-  m_Session = vfeSession::GetSessionFromThreadID();
-}
-
-vfeRenderMessageHandler::~vfeRenderMessageHandler()
+,  m_Session {vfeSession::GetSessionFromThreadID()}
 {
 }
 
@@ -515,10 +500,6 @@ void vfeRenderMessageHandler::FatalError(Console *Con, POVMS_Object& Obj, bool c
 ////////////////////////////////////////////////////////////////////////////////////////
 
 vfeProcessRenderOptions::vfeProcessRenderOptions(vfeSession *Session) : ProcessRenderOptions(), m_Session(Session)
-{
-}
-
-vfeProcessRenderOptions::~vfeProcessRenderOptions()
 {
 }
 
