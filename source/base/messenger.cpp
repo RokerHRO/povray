@@ -58,9 +58,6 @@ GenericMessenger::GenericMessenger(unsigned int wl, const char *sn) :
     stageName(sn)
 {}
 
-GenericMessenger::~GenericMessenger()
-{}
-
 void GenericMessenger::UserDebug(const char *text)
 {
     SendMessage(kMessageClass_UserDebug, kWarningNone, text);

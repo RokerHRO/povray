@@ -62,8 +62,9 @@ namespace pov_base
 class TextStreamBuffer
 {
     public:
-        TextStreamBuffer(size_t buffersize = 1024*8, unsigned int wrapwidth = 80);
+        explicit TextStreamBuffer(size_t buffersize = 1024*8, unsigned int wrapwidth = 80);
         virtual ~TextStreamBuffer();
+        TextStreamBuffer(const TextStreamBuffer&) = delete;
 
         void printf(const char *format, ...);
         void print(const char *str);

@@ -85,7 +85,7 @@ enum WarningLevel
 class MessageContext
 {
 public:
-    virtual ~MessageContext() {}
+    virtual ~MessageContext() = default;
     virtual UCS2String GetFileName() const = 0;
     virtual POV_LONG GetLine() const = 0;
     virtual POV_LONG GetColumn() const = 0;
@@ -98,7 +98,7 @@ class GenericMessenger
     public:
 
         GenericMessenger(unsigned int wl, const char *sn);
-        virtual ~GenericMessenger();
+        virtual ~GenericMessenger() = default;
 
         void UserDebug(const char *text);
 
